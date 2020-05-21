@@ -1,16 +1,45 @@
+import UseBaseContext from './../ContextApi/UseBaseContext'
+
 function getApi(param) {
     return new Promise((res, rej) => {
-        switch (param) {
-            case "/items": {
-                res(jsonData);
-                break;
-            }
-        }
+        let paramArr = param.split("/");
+        let startItem = paramArr[2] || 0;
+        let endItem = parseInt(startItem) + 10;
+
+        let data = checkAndSetLocalStorageData();
+        res(data.slice(startItem, endItem));
     });
 }
 
+function updateApi(id, rowData) {
+    return new Promise((res, rej) => {
+        let list = checkAndSetLocalStorageData();
+        let rowIndex = list.findIndex((inst) => inst.objectID == id);
+
+        //updating the value immutably
+        rowData['points']++;
+        let newList = [...list.slice(0, rowIndex), rowData, ...list.slice(rowIndex + 1)];
+        localStorage.setItem('listData', JSON.stringify(newList));
+        res(newList);
+    });
+}
+
+function checkAndSetLocalStorageData() {
+    let localStorageData = JSON.parse(localStorage.getItem('listData'));
+    if (!localStorageData || localStorageData.length < 30) {
+        localStorage.setItem('listData', JSON.stringify(jsonData));
+        localStorageData = jsonData;
+    }
+    return localStorageData;
+}
+
+function getAllData() {
+    return jsonData;
+}
+
 export {
-    getApi
+    getApi,
+    updateApi
 }
 
 // All the raw data goes here

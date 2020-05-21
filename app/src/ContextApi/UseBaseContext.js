@@ -18,16 +18,23 @@ const UseBaseContext = () => {
         }));
 
         //sync in localstorage for data persistance
-        setLocalStorageData(data, customDataObj);
+        // setLocalStorageData(data, customDataObj);
     }
 
     function getData(customDataObj) {
         return state[customDataObj];
     }
+
+    function syncFromLocalStorage() {
+        let localData = getLocalStorageData('mainData');
+        console.log(localData);
+    }
+
     return {
         setData,
         getData,
-        getLocalStorageData
+        getLocalStorageData,
+        syncFromLocalStorage
     }
 }
 

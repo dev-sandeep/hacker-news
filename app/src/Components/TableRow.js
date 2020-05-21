@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import UseBaseContext from './../ContextApi/UseBaseContext'
+import { updateApi } from '../Utility/MockServerResponse'
 
 export default function TableRow(props) {
     const { setData, getData } = UseBaseContext();
     const [list, setList] = useState([]);
 
     const upvote = (rowData) => {
-        let rowIndex = list.findIndex((inst) => inst.objectID == rowData.objectID);
+        updateApi(rowData.objectID, rowData).then((newData)=>{
+            setData(list, 'mainData');  
+        })
 
-        //updating the value immutably
-        rowData['points']++;
-        setList([...list.slice(0, rowIndex), rowData, ...list.slice(rowIndex+1)]);
-        setData(list, 'mainData');  
+
+
+
+        // let rowIndex = list.findIndex((inst) => inst.objectID == rowData.objectID);
+
+        // //updating the value immutably
+        // rowData['points']++;
+        // setList([...list.slice(0, rowIndex), rowData, ...list.slice(rowIndex+1)]);
+        // setData(list, 'mainData');  
     }
 
     useEffect(() => {
