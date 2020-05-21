@@ -1,5 +1,3 @@
-import UseBaseContext from './../ContextApi/UseBaseContext'
-
 function getApi(param) {
     return new Promise((res, rej) => {
         let paramArr = param.split("/");
@@ -24,22 +22,28 @@ function updateApi(id, rowData) {
     });
 }
 
+function hideApi(id) {
+    return new Promise((res, rej) => {
+        let list = checkAndSetLocalStorageData();
+        let newList = list.filter((inst) => inst.objectID != id);
+        localStorage.setItem('listData', JSON.stringify(newList));
+        res(newList);
+    });
+}
+
 function checkAndSetLocalStorageData() {
     let localStorageData = JSON.parse(localStorage.getItem('listData'));
-    if (!localStorageData || localStorageData.length < 30) {
+    if (!localStorageData) {
         localStorage.setItem('listData', JSON.stringify(jsonData));
         localStorageData = jsonData;
     }
     return localStorageData;
 }
 
-function getAllData() {
-    return jsonData;
-}
-
 export {
     getApi,
-    updateApi
+    updateApi,
+    hideApi
 }
 
 // All the raw data goes here

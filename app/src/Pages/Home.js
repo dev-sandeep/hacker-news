@@ -11,23 +11,9 @@ function Home() {
     const [currentPage, setCurrentPage] = useState(0);
 
     // /* get the context instance */
-    const { setData, getData, getLocalStorageData, syncFromLocalStorage } = UseBaseContext();
+    const { setData } = UseBaseContext();
 
     const init = () => {
-        // let storedData = getLocalStorageData('mainData');
-        //check if the data is there in the local storage
-        // if (storedData && storedData.length > 0) {
-        //     setList(storedData);
-        //     setData(storedData, 'mainData');
-        //     console.log("loaded from local storage");
-        // } else {
-        //call API if the data is not saved in local storage
-        // getApi('/items/10').then((data) => {
-        //     setList(data);
-        //     setData(data, 'mainData');
-        //     console.log("loaded from API");
-        // });
-        // }
 
         loadContent();
     }
@@ -47,14 +33,15 @@ function Home() {
     const loadContent = (page) => {
         page = page || 0;
         getApi('/items/' + (page * 10)).then((data) => {
+            //save in the local state
             setList(data);
+            //save in the context API
             setData(data, 'mainData');
         });
     }
 
     useEffect(() => {
         init();
-        syncFromLocalStorage();
     }, []);
 
     /* all of the maon content goes here  */
