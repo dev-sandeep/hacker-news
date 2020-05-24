@@ -15,6 +15,10 @@ steps:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
+- script: # script path or inline
+  workingDirectory: app/
+  displayName: 'changing working directory'
+
 - script: |
     npm install
     npm run build
